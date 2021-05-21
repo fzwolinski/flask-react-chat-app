@@ -5,8 +5,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = "somesecret"
 
-socket = SocketIO(app)
-
+socket = SocketIO(app, cors_allowed_origins="*")
 
 @socket.on('message')
 def handle_message(msg):
@@ -15,4 +14,4 @@ def handle_message(msg):
 
 
 if __name__ == "__main__":
-  socket.run(app)
+  socket.run(app, debug=True)
