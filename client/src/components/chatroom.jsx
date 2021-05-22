@@ -6,25 +6,29 @@ const socket = io.connect("http://127.0.0.1:5000");
 const ChatRoom = ( {match} ) => {
   const [response, setResponse] = useState(["msg1", "msg2"]); // TODO Delete default msg's
   const [username, setUsername] = useState("");
-  let usr = "";
 
   useEffect(() => {
-    // socket.on("connect", () => {
-    //   socket.send("User has connected");
-    // });
+    if (localStorage.getItem("sid") != null) {
+      socket.emit("GET_USERNAME_IF_SID", {"sid": localStorage.getItem("sid"), "room": match.params.roomName});
+    }
+    
+    socket.on("GET_USERNAME", (data) => {
+      if (data["ok"] === true) {
+        setUsername(data["username"]);
+      }
+    });
 
-    socket.on("message", (msg) => {
-      setResponse(oldArr => [...oldArr, usr + ": " + msg]);
+    socket.on("message", (data) => {
+      setResponse(oldArr => [...oldArr, data["username"] + ": " + data["msg"]]);
     });
 
     socket.on("SET_USERNAME_STATUS", (data) => {
       if (data["ok"] === true) {
         setUsername(data["username"]);
-        usr = data["username"];
-        // TODO: Add to localstorage
+        localStorage.setItem('sid', data["sid"]);
       }
+      console.log(data["msg"])
     });
-
   }, []);
 
   let form_msg = React.createRef();
