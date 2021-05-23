@@ -11,6 +11,7 @@ const ChatRoom = ( {match} ) => {
   useEffect(() => {
     if (localStorage.getItem("sess_id") != null) {
       socket.emit("GET_USERNAME_IF_SESS_ID", {"sess_id": localStorage.getItem("sess_id"), "room": match.params.roomName});
+      socket.emit("join", { 'room': match.params.roomName });
     }
     
     socket.on("GET_USERNAME", (data) => {
@@ -29,6 +30,7 @@ const ChatRoom = ( {match} ) => {
       if (data["ok"] === true) {
         setUsername(data["username"]);
         localStorage.setItem('sess_id', data["sess_id"]);
+        socket.emit("join", { 'room': match.params.roomName });
       }
       console.log(data["msg"])
     });
@@ -44,7 +46,7 @@ const ChatRoom = ( {match} ) => {
   
   const handleSendMsgSubmit = (e) => {
     e.preventDefault();
-    socket.send({"msg": form_msg.current.value, "sess_id": localStorage.getItem("sess_id")});
+    socket.send({"msg": form_msg.current.value, "sess_id": localStorage.getItem("sess_id"), 'room': match.params.roomName});
   };
 
   return (

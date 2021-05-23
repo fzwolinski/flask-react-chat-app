@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send, emit, join_room
 
 app = Flask(__name__)
 
@@ -24,10 +24,13 @@ def handle_message(data):
   for _, user in rooms.items():
     for u in user:
       if data.get("sess_id") == user.get(u).get('sess_id'):
-        send({"msg": data.get("msg"), "username": u}, broadcast = True)
+        send({"msg": data.get("msg"), "username": u}, room = data.get("room"))
         return
 
-  
+@socket.on('join')
+def on_join(data):
+    room = data.get("room")
+    join_room(room)
 
 @socket.on('SET_USERNAME')
 def handle_set_username(data):
