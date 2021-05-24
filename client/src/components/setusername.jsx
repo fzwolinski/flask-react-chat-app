@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
  
 import { v4 as uuidv4 } from 'uuid';
 
-const SetUsername = ({socket}) => {
-  const history = useHistory();
-
+const SetUsername = ({socket, history}) => {
   useEffect(() => {
     if (localStorage.getItem("sess_id") != null) {
       socket.emit("CHECK_USERNAME_BY_SESS_ID", {"sess_id": localStorage.getItem("sess_id")});
@@ -13,7 +10,12 @@ const SetUsername = ({socket}) => {
     
     socket.on("CHECK_USERNAME", (data) => {
       if (data["ok"] === true) {
-        history.push("/")
+        // Redirect
+        if ((history.location) !== undefined  && (history.location.state) !== undefined && (history.location.state.from) !== undefined) {
+            history.push(history.location.state.from);
+        } else {
+          history.push("/");
+        }
       } else {
         console.log("Invalid sess_id");
       }
@@ -22,7 +24,12 @@ const SetUsername = ({socket}) => {
     socket.on("SET_USERNAME_STATUS", (data) => {
       if (data["ok"] === true) {
         localStorage.setItem('sess_id', data["sess_id"]);
-        history.push("/");
+        // Redirect
+        if ((history.location) !== undefined  && (history.location.state) !== undefined && (history.location.state.from) !== undefined) {
+          history.push(history.location.state.from);
+        } else {
+          history.push("/");
+        }
       }
       console.log(data["msg"])
     });

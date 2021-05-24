@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import io from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,6 +8,7 @@ const socket = io.connect("http://127.0.0.1:5000");
 const ChatRoom = ( {match} ) => {
   const [response, setResponse] = useState(["msg1", "msg2"]); // TODO Delete default msg's
   const [username, setUsername] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     if (localStorage.getItem("sess_id") != null) {
@@ -41,7 +43,7 @@ const ChatRoom = ( {match} ) => {
 
   const handleSetUsername = (e) => {
     e.preventDefault();
-    socket.emit("SET_USERNAME", {"username": form_username.current.value, "room": match.params.roomName, "sess_id": uuidv4()});
+    history.push('/username', { from: "/room/some-room-name" } );
   };
   
   const handleSendMsgSubmit = (e) => {
@@ -52,10 +54,7 @@ const ChatRoom = ( {match} ) => {
   return (
     <div>
       { !username ? (
-        <form onSubmit={handleSetUsername}>
-          <input ref={form_username} type="text" />
-          <button>Set Username</button>
-        </form>
+        <div></div>        
       ) : (<h1>Hello {username}</h1>)}
       
       <div className="ChatRoom">
@@ -70,7 +69,7 @@ const ChatRoom = ( {match} ) => {
             <button>Send</button>
           </form>
         ) : (
-          <div>First Set Username</div>
+          <button onClick={handleSetUsername}>First Set Username</button>
         )}
       </div>
     </div>
