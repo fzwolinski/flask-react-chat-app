@@ -12,34 +12,28 @@ const ChatRoom = ( {match} ) => {
 
   useEffect(() => {
     if (localStorage.getItem("sess_id") != null) {
-      socket.emit("GET_USERNAME_IF_SESS_ID", {"sess_id": localStorage.getItem("sess_id"), "room": match.params.roomName});
+      socket.emit("CHECK_USERNAME_BY_SESS_ID", {"sess_id": localStorage.getItem("sess_id")});
       socket.emit("join", { 'room': match.params.roomName });
     }
     
-    socket.on("GET_USERNAME", (data) => {
+    socket.on("CHECK_USERNAME", (data) => {
       if (data["ok"] === true) {
         setUsername(data["username"]);
       } else {
-        console.log("Invalid sess_id");
+        console.log(data["msg"]);
       }
     });
 
     socket.on("message", (data) => {
-      setResponse(oldArr => [...oldArr, data["username"] + ": " + data["msg"]]);
-    });
-
-    socket.on("SET_USERNAME_STATUS", (data) => {
       if (data["ok"] === true) {
-        setUsername(data["username"]);
-        localStorage.setItem('sess_id', data["sess_id"]);
-        socket.emit("join", { 'room': match.params.roomName });
+        setResponse(oldArr => [...oldArr, data["username"] + ": " + data["msg"]]);
+      } else {
+        console.log(data["msg"]);
       }
-      console.log(data["msg"])
     });
   }, []);
 
   let form_msg = React.createRef();
-  let form_username = React.createRef();
 
   const handleSetUsername = (e) => {
     e.preventDefault();

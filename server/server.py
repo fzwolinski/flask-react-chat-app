@@ -18,12 +18,12 @@ users = {
 @socket.on('message')
 def handle_message(data):
   print(f"[Message]: {data.get('msg')}")
-  # Get user by sess_id
-  for _, user in rooms.items():
-    for u in user:
-      if data.get("sess_id") == user.get(u).get('sess_id'):
-        send({"msg": data.get("msg"), "username": u}, room = data.get("room"))
-        return
+  for user in users:
+    if users.get(user).get("sess_id") == data.get("sess_id"):
+      send({"ok": True, "msg": data.get("msg"), "username": user}, room = data.get("room"))
+      return
+  send({"ok": False, "msg": "No user with such sess_id", "username": ""}, room = data.get("room"))
+
 
 @socket.on('join')
 def on_join(data):
@@ -62,9 +62,9 @@ def handle_check_username_by_sess_id(data):
   for user in users:
     if users.get(user).get("sess_id") == data.get("sess_id"):
       # User with given sess_id exists
-      emit('CHECK_USERNAME', {'ok': True}, room=request.sid)
+      emit('CHECK_USERNAME', {'ok': True, "username": user}, room=request.sid)
       return
-  emit('CHECK_USERNAME', {'ok': False}, room=request.sid)
+  emit('CHECK_USERNAME', {'ok': False, "username": "", "msg": "Invalid sess_id."}, room=request.sid)
 
 # TODO
 @socket.on('disconnect')
