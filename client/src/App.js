@@ -1,4 +1,5 @@
-import { Link, Route, Switch } from "react-router-dom";
+import { Button, Container, Divider } from "@material-ui/core";
+import { Route, Switch, useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import "./App.css";
 import ChatRoom from "./components/chatroom";
@@ -8,18 +9,33 @@ import SetUsername from "./components/setusername";
 const socket = io.connect("http://127.0.0.1:5000");
 
 function App() {
+  const history = useHistory();
+
   return (
-    <div>
-      <Link to="/">Room List</Link>
-      <Switch>
-        <Route
-          path="/username"
-          render={(props) => <SetUsername socket={socket} {...props} />}
-        />
-        <Route path="/room/:roomName" component={ChatRoom} />
-        <Route path="/" component={Home} />
-      </Switch>
-    </div>
+    <Container style={{ textAlign: "center" }} maxWidth="xs">
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          history.push("/");
+        }}
+        style={{ marginBottom: 10, marginTop: 20 }}
+      >
+        Room List
+      </Button>
+      <Divider />
+      {/* <Link to="/">Room List</Link> */}
+      <Container style={{ paddingTop: 100 }} maxWidth="xs">
+        <Switch>
+          <Route
+            path="/username"
+            render={(props) => <SetUsername socket={socket} {...props} />}
+          />
+          <Route path="/room/:roomName" component={ChatRoom} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </Container>
+    </Container>
   );
 }
 

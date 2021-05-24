@@ -1,3 +1,4 @@
+import { Button, Container, TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -55,10 +56,20 @@ const SetUsername = ({ socket, history }) => {
   };
 
   return (
-    <form onSubmit={handleSetUsername}>
-      <input ref={form_username} type="text" />
-      <button>Set Username</button>
-    </form>
+    <Container style={{ textAlign: "center" }} maxWidth="xs">
+      <form noValidate autoComplete="off" onSubmit={handleSetUsername}>
+        <TextField
+          inputRef={form_username}
+          id="standard-basic"
+          label="Username"
+          size="small"
+        />
+        <div style={{ marginBottom: 20 }}></div>
+        <Button type="submit" variant="contained" color="primary">
+          Set Username
+        </Button>
+      </form>
+    </Container>
   );
 };
 
