@@ -1,27 +1,7 @@
-from flask import Flask, request
-from flask_socketio import SocketIO, send, emit, join_room
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = "somesecret"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-socket = SocketIO(app, cors_allowed_origins="*")
-
-class User(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  username = db.Column(db.String(40), unique=True, nullable=False)
-  sid = db.Column(db.String(40), unique=True, nullable=True)
-  sess_id = db.Column(db.String(36), unique=True, nullable=False)
-
-  def __init__(self, username, sid, sess_id):
-    self.username = username
-    self.sid = sid
-    self.sess_id = sess_id
+from flask import request
+from flask_socketio import send, emit, join_room
+from server import socket, db
+from server.models import User
 
 @socket.on('message')
 def handle_message(data):
@@ -78,7 +58,3 @@ def handle_check_username_by_sess_id(data):
 def handle_disconnect():
   # Remove user by sid
   print("\n\nDISCONNECTED\n\n")
-
-if __name__ == "__main__":
-  db.create_all()
-  socket.run(app, debug=True)
