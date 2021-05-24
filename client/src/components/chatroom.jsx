@@ -10,11 +10,12 @@ const ChatRoom = ({ match }) => {
   const history = useHistory();
 
   useEffect(() => {
+    socket.emit("join", { room: match.params.roomName });
+
     if (localStorage.getItem("sess_id") != null) {
       socket.emit("CHECK_USERNAME_BY_SESS_ID", {
         sess_id: localStorage.getItem("sess_id"),
       });
-      socket.emit("join", { room: match.params.roomName });
     }
 
     socket.on("CHECK_USERNAME", (data) => {
