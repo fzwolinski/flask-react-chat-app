@@ -12,7 +12,7 @@ function App() {
   const history = useHistory();
 
   return (
-    <Container style={{ textAlign: "center" }} maxWidth="xs">
+    <Container style={{ textAlign: "center" }} maxWidth="md">
       <Button
         variant="outlined"
         color="primary"
@@ -24,8 +24,7 @@ function App() {
         Room List
       </Button>
       <Divider />
-      {/* <Link to="/">Room List</Link> */}
-      <Container style={{ paddingTop: 100 }} maxWidth="xs">
+      <Container style={{ paddingTop: 100 }} maxWidth="md">
         <Switch>
           <Route
             path="/username"

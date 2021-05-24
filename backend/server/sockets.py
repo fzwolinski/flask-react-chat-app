@@ -2,14 +2,18 @@ from flask import request
 from flask_socketio import send, emit, join_room
 from server import socket, db
 from server.models import User
+from datetime import datetime
+import pytz
 
 @socket.on('message')
 def handle_message(data):
   print(f"[Message]: {data.get('msg')}")
   user = User.query.filter_by(sess_id=data.get("sess_id")).first()
+  time_now = datetime.now(pytz.timezone('Poland')).strftime("%H:%M:%S")
+
   if user:
     # Everything correct
-    send({"ok": True, "msg": data.get("msg"), "username": user.username}, room = data.get("room"))
+    send({"ok": True, "msg": data.get("msg"), "username": user.username, "time": time_now}, room = data.get("room"))
     return
   send({"ok": False, "msg": "No user with such sess_id", "username": ""}, room = data.get("room"))
 

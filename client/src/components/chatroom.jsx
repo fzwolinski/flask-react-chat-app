@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
+import ChatComment from "./chatcomment";
 
 const socket = io.connect("http://127.0.0.1:5000");
 
 const ChatRoom = ({ match }) => {
-  const [response, setResponse] = useState(["msg1", "msg2"]); // TODO Delete default msg's
+  const [response, setResponse] = useState([
+    {
+      time: "07:23:02",
+      username: "User1",
+      msg: "This is an example comment",
+    },
+    {
+      time: "07:24:22",
+      username: "Mariusz",
+      msg: "Hello Thereadjasuidhasudhasdhasuhdiauhdiahdahsdahdhadohasdhausdhasuidhasudhasuidhuasidhsauhd",
+    },
+  ]); // TODO Delete default msg's
   const [username, setUsername] = useState("");
   const history = useHistory();
 
@@ -30,7 +42,11 @@ const ChatRoom = ({ match }) => {
       if (data["ok"] === true) {
         setResponse((oldArr) => [
           ...oldArr,
-          data["username"] + ": " + data["msg"],
+          {
+            time: data["time"],
+            username: data["username"],
+            msg: data["msg"],
+          },
         ]);
       } else {
         console.log(data["msg"]);
@@ -55,24 +71,35 @@ const ChatRoom = ({ match }) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
       {!username ? <div></div> : <h1>Hello {username}</h1>}
 
-      <div className="ChatRoom">
-        <ul>
-          {response.map((item) => (
-            <li key={item}>{item}</li> // TODO: change key to sth unique
-          ))}
-        </ul>
-        {username ? (
-          <form onSubmit={handleSendMsgSubmit}>
-            <input ref={form_msg} id="chat-msg" type="text" />
-            <button>Send</button>
-          </form>
-        ) : (
-          <button onClick={handleSetUsername}>First Set Username</button>
-        )}
-      </div>
+      <ul style={{ maxWidth: 500 }}>
+        {response.map((item) => (
+          <ChatComment
+            key={item.time + item.username + item.msg}
+            time={item.time}
+            username={item.username}
+            msg={item.msg}
+          />
+        ))}
+      </ul>
+
+      {username ? (
+        <form onSubmit={handleSendMsgSubmit}>
+          <input ref={form_msg} id="chat-msg" type="text" />
+          <button>Send</button>
+        </form>
+      ) : (
+        <button onClick={handleSetUsername}>First Set Username</button>
+      )}
     </div>
   );
 };
