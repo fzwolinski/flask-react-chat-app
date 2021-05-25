@@ -24,7 +24,7 @@ function App() {
         Room List
       </Button>
       <Divider />
-      <Container style={{ paddingTop: 100 }} maxWidth="md">
+      <Container style={{ paddingTop: 50 }} maxWidth="md">
         <Switch>
           <Route
             path="/username"

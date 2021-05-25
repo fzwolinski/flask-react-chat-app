@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
+import { TextField, Divider, Button } from "@material-ui/core";
 import ChatComment from "./chatcomment";
 
 const socket = io.connect("http://127.0.0.1:5000");
@@ -68,6 +69,7 @@ const ChatRoom = ({ match }) => {
       sess_id: localStorage.getItem("sess_id"),
       room: match.params.roomName,
     });
+    form_msg.current.value = "";
   };
 
   return (
@@ -79,9 +81,28 @@ const ChatRoom = ({ match }) => {
         flexDirection: "column",
       }}
     >
-      {!username ? <div></div> : <h1>Hello {username}</h1>}
+      {!username ? (
+        <div></div>
+      ) : (
+        <h1>
+          <span style={{ fontWeight: 400 }}>Hello</span>{" "}
+          <span style={{ color: "#FF6200", fontWeight: 700 }}>{username}</span>
+        </h1>
+      )}
 
-      <ul style={{ maxWidth: 500 }}>
+      <ul
+        style={{
+          maxWidth: 500,
+          minHeight: 300,
+          overflowY: "scroll",
+          maxWidth: 500,
+          marginBlockStart: 0,
+          margin: 0,
+          padding: 0,
+          paddingInlineStart: 0,
+          marginBlockEnd: 0,
+        }}
+      >
         {response.map((item) => (
           <ChatComment
             key={item.time + item.username + item.msg}
@@ -92,10 +113,38 @@ const ChatRoom = ({ match }) => {
         ))}
       </ul>
 
+      <Divider
+        style={{
+          marginBottom: 15,
+          marginTop: 5,
+          width: "100%",
+          maxWidth: 500,
+        }}
+      />
+
       {username ? (
-        <form onSubmit={handleSendMsgSubmit}>
-          <input ref={form_msg} id="chat-msg" type="text" />
-          <button>Send</button>
+        <form
+          style={{ width: "100%", maxWidth: 500 }}
+          onSubmit={handleSendMsgSubmit}
+        >
+          <TextField
+            id="standard-full-width"
+            placeholder="Message..."
+            fullWidth
+            inputRef={form_msg}
+            margin="none"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <Button
+            style={{ width: "100%", maxWidth: 500, marginTop: 8 }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            Send!
+          </Button>
         </form>
       ) : (
         <button onClick={handleSetUsername}>First Set Username</button>
