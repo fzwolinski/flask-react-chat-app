@@ -16,7 +16,7 @@ const ChatRoom = ({ match }) => {
     {
       time: "07:24:22",
       username: "Mariusz",
-      msg: "Hello Thereadjasuidhasudhasdhasuhdiauhdiahdahsdahdhadohasdhausdhasuidhasudhasuidhuasidhsauhd",
+      msg: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
     },
   ]); // TODO Delete default msg's
   const [username, setUsername] = useState("");
@@ -152,7 +152,15 @@ const ChatRoom = ({ match }) => {
           </Button>
         </form>
       ) : (
-        <button onClick={handleSetUsername}>First Set Username</button>
+        <Button
+          style={{ width: "100%", maxWidth: 500, marginTop: 8 }}
+          type="submit"
+          variant="contained"
+          color="secondary"
+          onClick={handleSetUsername}
+        >
+          First Set Username
+        </Button>
       )}
     </div>
   );
