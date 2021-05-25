@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import { TextField, Divider, Button } from "@material-ui/core";
@@ -49,6 +49,7 @@ const ChatRoom = ({ match }) => {
             msg: data["msg"],
           },
         ]);
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       } else {
         console.log(data["msg"]);
       }
@@ -56,6 +57,7 @@ const ChatRoom = ({ match }) => {
   }, []);
 
   let form_msg = React.createRef();
+  const messagesEndRef = useRef(null);
 
   const handleSetUsername = (e) => {
     e.preventDefault();
@@ -94,6 +96,7 @@ const ChatRoom = ({ match }) => {
         style={{
           maxWidth: 500,
           minHeight: 300,
+          maxHeight: 500,
           overflowY: "scroll",
           maxWidth: 500,
           marginBlockStart: 0,
@@ -111,6 +114,8 @@ const ChatRoom = ({ match }) => {
             msg={item.msg}
           />
         ))}
+
+        <div ref={messagesEndRef} />
       </ul>
 
       <Divider
