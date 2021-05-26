@@ -1,6 +1,6 @@
-# 🏫 Event Chat App
+# 🏫 Flask React Chat App
 
-**Event Chat App** - real time chat web chat app.
+**Flask React Chat App** - real time chat web chat app.
 
 #### 🎨 Tech Stack
 
