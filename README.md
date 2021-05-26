@@ -1,6 +1,6 @@
 # 🏫 Flask React Chat App
 
-**Flask React Chat App** - real time chat web chat app.
+**Flask React Chat App** - real time chat web app.
 
 #### 🎨 Tech Stack
 
