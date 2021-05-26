@@ -97,7 +97,7 @@ const ChatRoom = ({ match }) => {
           maxWidth: 500,
           minHeight: 300,
           maxHeight: 500,
-          overflowY: "scroll",
+          overflowY: "auto",
           maxWidth: 500,
           marginBlockStart: 0,
           margin: 0,
