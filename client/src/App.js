@@ -30,7 +30,10 @@ function App() {
             path="/username"
             render={(props) => <SetUsername socket={socket} {...props} />}
           />
-          <Route path="/room/:roomName" component={ChatRoom} />
+          <Route
+            path="/room/:roomName"
+            render={(props) => <ChatRoom socket={socket} {...props} />}
+          />
           <Route path="/" component={Home} />
         </Switch>
       </Container>

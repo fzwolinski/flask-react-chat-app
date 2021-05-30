@@ -1,12 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import { Button, Divider, TextField } from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import io from "socket.io-client";
-import { TextField, Divider, Button } from "@material-ui/core";
 import ChatComment from "./chatcomment";
 
-const socket = io.connect("http://127.0.0.1:5000");
-
-const ChatRoom = ({ match }) => {
+const ChatRoom = ({ match, socket }) => {
   const [response, setResponse] = useState([
     {
       time: "07:23:02",

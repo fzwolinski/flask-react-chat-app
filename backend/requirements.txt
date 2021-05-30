@@ -6,3 +6,4 @@ gunicorn
 pytz
 flask_cors
 gevent
+simple-websocket
