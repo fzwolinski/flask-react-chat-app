@@ -1,9 +1,11 @@
 import { Button, Container, TextField } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { setUsername } from "../styles/setusername";
 
 const SetUsername = ({ socket, history }) => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  let isLoggedIn = false;
   useEffect(() => {
     if (localStorage.getItem("sess_id") != null) {
       socket.emit("CHECK_USERNAME_BY_SESS_ID", {
@@ -13,18 +15,12 @@ const SetUsername = ({ socket, history }) => {
 
     socket.on("CHECK_USERNAME", (data) => {
       if (data["ok"] === true) {
-        // Redirect
-        if (
-          history.location !== undefined &&
-          history.location.state !== undefined &&
-          history.location.state.from !== undefined
-        ) {
-          history.push(history.location.state.from);
-        } else {
-          history.push("/");
-        }
+        // User is set, update possible
+        setLoggedIn(true);
+        isLoggedIn = true;
       } else {
-        console.log("Invalid sess_id");
+        setLoggedIn(false);
+        isLoggedIn = false;
       }
     });
 
@@ -50,10 +46,18 @@ const SetUsername = ({ socket, history }) => {
 
   const handleSetUsername = (e) => {
     e.preventDefault();
-    socket.emit("SET_USERNAME", {
-      username: form_username.current.value,
-      sess_id: uuidv4(),
-    });
+    if (isLoggedIn) {
+      // Update
+      socket.emit("SET_USERNAME", {
+        username: form_username.current.value,
+        sess_id: localStorage.getItem("sess_id"),
+      });
+    } else {
+      socket.emit("SET_USERNAME", {
+        username: form_username.current.value,
+        sess_id: uuidv4(),
+      });
+    }
   };
 
   return (
@@ -66,9 +70,16 @@ const SetUsername = ({ socket, history }) => {
           size="small"
         />
         <div style={setUsername.separateDiv}></div>
-        <Button type="submit" variant="contained" color="primary">
-          Set Username
-        </Button>
+
+        {loggedIn ? (
+          <Button type="submit" variant="contained" color="primary">
+            Update Username
+          </Button>
+        ) : (
+          <Button type="submit" variant="contained" color="primary">
+            Set Username
+          </Button>
+        )}
       </form>
     </Container>
   );

@@ -24,6 +24,16 @@ function App() {
       >
         Room List
       </Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => {
+          history.push("/username");
+        }}
+        style={app.roomListBtn}
+      >
+        Change Username
+      </Button>
       <Divider />
       <Container style={app.roomsContainer} maxWidth="md">
         <Switch>

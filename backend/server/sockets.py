@@ -40,6 +40,9 @@ def handle_set_username(data):
     # Username is taken
     emit('SET_USERNAME_STATUS', {'ok': False, "username": "", "msg": "Username is taken!"}, room=sid)
     return 
+ 
+  User.query.filter_by(sid=sid).delete()
+  User.query.filter_by(sess_id=sess_id).delete()
 
   # Add user to database
   usr = User(username, sid, sess_id)
@@ -56,7 +59,7 @@ def handle_check_username_by_sess_id(data):
     emit('CHECK_USERNAME', {'ok': True, "username": user.username}, room=request.sid)
     return
   emit('CHECK_USERNAME', {'ok': False, "username": "", "msg": "Invalid sess_id."}, room=request.sid)
-  
+
 # TODO
 @socket.on('disconnect')
 def handle_disconnect():
