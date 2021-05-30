@@ -5,6 +5,7 @@ import "./App.css";
 import ChatRoom from "./components/chatroom";
 import Home from "./components/home";
 import SetUsername from "./components/setusername";
+import { app } from "./styles/app";
 
 const socket = io.connect("http://127.0.0.1:5000");
 
@@ -12,19 +13,19 @@ function App() {
   const history = useHistory();
 
   return (
-    <Container style={{ textAlign: "center" }} maxWidth="md">
+    <Container style={app.container} maxWidth="md">
       <Button
         variant="outlined"
         color="primary"
         onClick={() => {
           history.push("/");
         }}
-        style={{ marginBottom: 10, marginTop: 20 }}
+        style={app.roomListBtn}
       >
         Room List
       </Button>
       <Divider />
-      <Container style={{ paddingTop: 50 }} maxWidth="md">
+      <Container style={app.roomsContainer} maxWidth="md">
         <Switch>
           <Route
             path="/username"

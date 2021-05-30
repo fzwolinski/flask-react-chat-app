@@ -1,6 +1,7 @@
 import { Button, Divider, TextField } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { chatRoom } from "../styles/chatroom";
 import ChatComment from "./chatcomment";
 
 const ChatRoom = ({ match, socket }) => {
@@ -72,37 +73,17 @@ const ChatRoom = ({ match, socket }) => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
+    <div style={chatRoom.wrapperDiv}>
       {!username ? (
         <div></div>
       ) : (
         <h1>
-          <span style={{ fontWeight: 400 }}>Hello</span>{" "}
-          <span style={{ color: "#FF6200", fontWeight: 700 }}>{username}</span>
+          <span style={chatRoom.helloHeader}>Hello</span>{" "}
+          <span style={chatRoom.usernameHeader}>{username}</span>
         </h1>
       )}
 
-      <ul
-        style={{
-          maxWidth: 500,
-          minHeight: 300,
-          maxHeight: 500,
-          overflowY: "auto",
-          maxWidth: 500,
-          marginBlockStart: 0,
-          margin: 0,
-          padding: 0,
-          paddingInlineStart: 0,
-          marginBlockEnd: 0,
-        }}
-      >
+      <ul style={chatRoom.msgUlList}>
         {response.map((item) => (
           <ChatComment
             key={item.time + item.username + item.msg}
@@ -115,20 +96,10 @@ const ChatRoom = ({ match, socket }) => {
         <div ref={messagesEndRef} />
       </ul>
 
-      <Divider
-        style={{
-          marginBottom: 15,
-          marginTop: 5,
-          width: "100%",
-          maxWidth: 500,
-        }}
-      />
+      <Divider style={chatRoom.chatInputDivider} />
 
       {username ? (
-        <form
-          style={{ width: "100%", maxWidth: 500 }}
-          onSubmit={handleSendMsgSubmit}
-        >
+        <form style={chatRoom.msgForm} onSubmit={handleSendMsgSubmit}>
           <TextField
             id="standard-full-width"
             placeholder="Message..."
@@ -140,7 +111,7 @@ const ChatRoom = ({ match, socket }) => {
             }}
           />
           <Button
-            style={{ width: "100%", maxWidth: 500, marginTop: 8 }}
+            style={chatRoom.sendMsgBtn}
             type="submit"
             variant="contained"
             color="primary"
@@ -150,7 +121,7 @@ const ChatRoom = ({ match, socket }) => {
         </form>
       ) : (
         <Button
-          style={{ width: "100%", maxWidth: 500, marginTop: 8 }}
+          style={chatRoom.setUsrBtn}
           type="submit"
           variant="contained"
           color="secondary"

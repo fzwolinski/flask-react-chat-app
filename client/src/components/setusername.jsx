@@ -1,6 +1,7 @@
 import { Button, Container, TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { setUsername } from "../styles/setusername";
 
 const SetUsername = ({ socket, history }) => {
   useEffect(() => {
@@ -56,7 +57,7 @@ const SetUsername = ({ socket, history }) => {
   };
 
   return (
-    <Container style={{ textAlign: "center" }} maxWidth="xs">
+    <Container style={setUsername.container} maxWidth="xs">
       <form noValidate autoComplete="off" onSubmit={handleSetUsername}>
         <TextField
           inputRef={form_username}
@@ -64,7 +65,7 @@ const SetUsername = ({ socket, history }) => {
           label="Username"
           size="small"
         />
-        <div style={{ marginBottom: 20 }}></div>
+        <div style={setUsername.separateDiv}></div>
         <Button type="submit" variant="contained" color="primary">
           Set Username
         </Button>

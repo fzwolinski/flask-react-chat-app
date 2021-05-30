@@ -1,20 +1,14 @@
 import React from "react";
+import { chatComment } from "../styles/chatcomment";
 
 const ChatComment = ({ username, time, msg }) => {
   return (
-    <li
-      style={{
-        listStyleType: "none",
-        textAlign: "left",
-        marginBottom: 10,
-        overflowWrap: "break-word",
-      }}
-    >
+    <li style={chatComment.listElement}>
       <span>{time}</span>
-      <div style={{ marginLeft: 5, display: "inline-block" }}></div>
-      <span style={{ fontWeight: "bold" }}>{username}</span>
+      <div style={chatComment.separateDiv}></div>
+      <span style={chatComment.usernameSpan}>{username}</span>
       <span>:</span>
-      <div style={{ marginLeft: 5, display: "inline-block" }}></div>
+      <div style={chatComment.separateDiv}></div>
       <span>{msg}</span>
     </li>
   );
