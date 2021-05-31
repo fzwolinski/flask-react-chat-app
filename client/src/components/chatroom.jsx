@@ -1,7 +1,7 @@
 import { Button, Divider, TextField } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { chatRoom } from "../styles/chatroom";
+import { ChatRoomStyle } from "../styles/chatroom";
 import ChatComment from "./chatcomment";
 
 const ChatRoom = ({ match, socket }) => {
@@ -73,17 +73,17 @@ const ChatRoom = ({ match, socket }) => {
   };
 
   return (
-    <div style={chatRoom.wrapperDiv}>
+    <div style={ChatRoomStyle.wrapperDiv}>
       {!username ? (
         <div></div>
       ) : (
         <h1>
-          <span style={chatRoom.helloHeader}>Hello</span>{" "}
-          <span style={chatRoom.usernameHeader}>{username}</span>
+          <span style={ChatRoomStyle.helloHeader}>Hello</span>{" "}
+          <span style={ChatRoomStyle.usernameHeader}>{username}</span>
         </h1>
       )}
 
-      <ul style={chatRoom.msgUlList}>
+      <ul style={ChatRoomStyle.msgUlList}>
         {response.map((item) => (
           <ChatComment
             key={item.time + item.username + item.msg}
@@ -96,10 +96,10 @@ const ChatRoom = ({ match, socket }) => {
         <div ref={messagesEndRef} />
       </ul>
 
-      <Divider style={chatRoom.chatInputDivider} />
+      <Divider style={ChatRoomStyle.chatInputDivider} />
 
       {username ? (
-        <form style={chatRoom.msgForm} onSubmit={handleSendMsgSubmit}>
+        <form style={ChatRoomStyle.msgForm} onSubmit={handleSendMsgSubmit}>
           <TextField
             id="standard-full-width"
             placeholder="Message..."
@@ -111,7 +111,7 @@ const ChatRoom = ({ match, socket }) => {
             }}
           />
           <Button
-            style={chatRoom.sendMsgBtn}
+            style={ChatRoomStyle.sendMsgBtn}
             type="submit"
             variant="contained"
             color="primary"
@@ -121,7 +121,7 @@ const ChatRoom = ({ match, socket }) => {
         </form>
       ) : (
         <Button
-          style={chatRoom.setUsrBtn}
+          style={ChatRoomStyle.setUsrBtn}
           type="submit"
           variant="contained"
           color="secondary"

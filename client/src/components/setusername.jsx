@@ -1,7 +1,7 @@
 import { Button, Container, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { setUsername } from "../styles/setusername";
+import { SetUsernameStyle } from "../styles/setusername";
 
 const SetUsername = ({ socket, history }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -61,7 +61,7 @@ const SetUsername = ({ socket, history }) => {
   };
 
   return (
-    <Container style={setUsername.container} maxWidth="xs">
+    <Container style={SetUsernameStyle.container} maxWidth="xs">
       <form noValidate autoComplete="off" onSubmit={handleSetUsername}>
         <TextField
           inputRef={form_username}
@@ -69,7 +69,7 @@ const SetUsername = ({ socket, history }) => {
           label="Username"
           size="small"
         />
-        <div style={setUsername.separateDiv}></div>
+        <div style={SetUsernameStyle.separateDiv}></div>
 
         {loggedIn ? (
           <Button type="submit" variant="contained" color="primary">

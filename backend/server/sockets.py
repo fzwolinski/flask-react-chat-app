@@ -1,7 +1,7 @@
 from flask import request
 from flask_socketio import send, emit, join_room
 from server import socket, db
-from server.models import User
+from server.models import User, Room
 from datetime import datetime
 import pytz
 
@@ -59,6 +59,25 @@ def handle_check_username_by_sess_id(data):
     emit('CHECK_USERNAME', {'ok': True, "username": user.username}, room=request.sid)
     return
   emit('CHECK_USERNAME', {'ok': False, "username": "", "msg": "Invalid sess_id."}, room=request.sid)
+
+@socket.on('ADD_ROOM')
+def handle_add_room(data):
+  room_name = data.get("room_name")
+
+  # Check if room with that name already exists
+  if Room.query.filter_by(name=room_name).first():
+    # Room exists, can not create room with the same name
+    emit('ADD_ROOM_STATUS', {'ok': False, "room_name": "", "msg": "A room with that name already exists"}, room=request.sid)
+    return
+
+  # Add new room
+  room = Room(room_name)
+  db.session.add(room)
+  db.session.commit()
+  print("\n\nROOM HAS BEEN ADDED\n\n");
+
+  emit('ADD_ROOM_STATUS', {'ok': True, "room_name": room_name, "msg": "Room has been created"}, room=request.sid)
+
 
 # TODO
 @socket.on('disconnect')

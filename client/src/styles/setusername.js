@@ -1,4 +1,4 @@
-export const setUsername = {
+export const SetUsernameStyle = {
   container: {
     textAlign: "center",
   },

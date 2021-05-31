@@ -5,7 +5,7 @@ import "./App.css";
 import ChatRoom from "./components/chatroom";
 import Home from "./components/home";
 import SetUsername from "./components/setusername";
-import { app } from "./styles/app";
+import { AppStyle } from "./styles/app";
 
 const socket = io.connect("http://127.0.0.1:5000");
 
@@ -13,14 +13,14 @@ function App() {
   const history = useHistory();
 
   return (
-    <Container style={app.container} maxWidth="md">
+    <Container style={AppStyle.container} maxWidth="md">
       <Button
         variant="outlined"
         color="primary"
         onClick={() => {
           history.push("/");
         }}
-        style={app.roomListBtn}
+        style={AppStyle.roomListBtn}
       >
         Room List
       </Button>
@@ -30,12 +30,12 @@ function App() {
         onClick={() => {
           history.push("/username");
         }}
-        style={app.roomListBtn}
+        style={AppStyle.roomListBtn}
       >
         Change Username
       </Button>
       <Divider />
-      <Container style={app.roomsContainer} maxWidth="md">
+      <Container style={AppStyle.roomsContainer} maxWidth="md">
         <Switch>
           <Route
             path="/username"
@@ -45,7 +45,10 @@ function App() {
             path="/room/:roomName"
             render={(props) => <ChatRoom socket={socket} {...props} />}
           />
-          <Route path="/" component={Home} />
+          <Route
+            path="/"
+            render={(props) => <Home socket={socket} {...props} />}
+          />
         </Switch>
       </Container>
     </Container>

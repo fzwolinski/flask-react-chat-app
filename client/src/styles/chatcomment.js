@@ -1,4 +1,4 @@
-export const chatComment = {
+export const ChatCommentStyle = {
   listElement: {
     listStyleType: "none",
     textAlign: "left",

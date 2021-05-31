@@ -1,4 +1,4 @@
-export const rooms = {
+export const RoomsStyle = {
   listItemText: {
     textAlign: "center",
   },

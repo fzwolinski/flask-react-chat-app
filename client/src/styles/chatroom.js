@@ -1,4 +1,4 @@
-export const chatRoom = {
+export const ChatRoomStyle = {
   wrapperDiv: {
     display: "flex",
     justifyContent: "center",

@@ -1,14 +1,14 @@
 import React from "react";
-import { chatComment } from "../styles/chatcomment";
+import { ChatCommentStyle } from "../styles/chatcomment";
 
 const ChatComment = ({ username, time, msg }) => {
   return (
-    <li style={chatComment.listElement}>
+    <li style={ChatCommentStyle.listElement}>
       <span>{time}</span>
-      <div style={chatComment.separateDiv}></div>
-      <span style={chatComment.usernameSpan}>{username}</span>
+      <div style={ChatCommentStyle.separateDiv}></div>
+      <span style={ChatCommentStyle.usernameSpan}>{username}</span>
       <span>:</span>
-      <div style={chatComment.separateDiv}></div>
+      <div style={ChatCommentStyle.separateDiv}></div>
       <span>{msg}</span>
     </li>
   );
