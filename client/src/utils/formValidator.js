@@ -2,12 +2,19 @@ export const addRoomFormValidated = (roomName) => {
   // Reset errors messages
   let errors = [];
   const minRoomNameLength = 5;
+  const maxRoomNameLength = 50;
   let correctForm = true;
   let input = roomName;
 
-  if (input.length < minRoomNameLength) {
+  if (input.length < minRoomNameLength || input.length > maxRoomNameLength) {
     correctForm = false;
-    errors.push("Room name length must be > " + minRoomNameLength);
+    errors.push(
+      "Input length invalid must be (" +
+        minRoomNameLength +
+        ", " +
+        maxRoomNameLength +
+        ")"
+    );
   }
 
   if (input === false || !input) {

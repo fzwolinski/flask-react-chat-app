@@ -22,6 +22,7 @@ const AddRoom = ({ socket }) => {
   });
 
   const handleOpen = () => {
+    setFormValidateMsg([]);
     setOpen(true);
   };
 
