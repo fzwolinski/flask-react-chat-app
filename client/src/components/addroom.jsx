@@ -1,10 +1,10 @@
 import { Button, TextField } from "@material-ui/core";
-
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import React, { useEffect, useState } from "react";
 import { AddRoomStyle } from "../styles/addroom";
+import { addRoomFormValidated } from "../utils/formValidator";
 
 const AddRoom = ({ socket }) => {
   const [open, setOpen] = useState(false);
@@ -31,45 +31,13 @@ const AddRoom = ({ socket }) => {
 
   let formRoomName = React.createRef();
 
-  const formValidated = () => {
-    // Reset errors messages
-    setFormValidateMsg([]);
-
-    const minRoomNameLength = 5;
-    let correctForm = true;
-    let input = formRoomName.current.value.trim();
-
-    if (input.length < minRoomNameLength) {
-      correctForm = false;
-      setFormValidateMsg((formValidateMsg) => [
-        ...formValidateMsg,
-        "Room name length must be > " + minRoomNameLength,
-      ]);
-    }
-
-    if (input === false || !input) {
-      correctForm = false;
-      setFormValidateMsg((formValidateMsg) => [
-        ...formValidateMsg,
-        "Something went wrong!",
-      ]);
-    }
-
-    if (/^[a-zA-Z\s]*$/g.test(input) === false) {
-      correctForm = false;
-      setFormValidateMsg((formValidateMsg) => [
-        ...formValidateMsg,
-        "Room name: only letters allowed [a-zA-Z\\s]",
-      ]);
-    }
-
-    return correctForm;
-  };
-
   const handleAddRoom = (e) => {
     e.preventDefault();
+    var validation = addRoomFormValidated(formRoomName.current.value);
 
-    if (formValidated()) {
+    setFormValidateMsg(validation[1]);
+
+    if (validation[0] === true) {
       socket.emit("ADD_ROOM", {
         room_name: formRoomName.current.value,
       });

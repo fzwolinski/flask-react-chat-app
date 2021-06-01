@@ -62,7 +62,7 @@ def handle_check_username_by_sess_id(data):
 
 @socket.on('ADD_ROOM')
 def handle_add_room(data):
-  room_name = data.get("room_name")
+  room_name = data.get("room_name").title()
 
   # Check if room with that name already exists
   if Room.query.filter_by(name=room_name).first():
