@@ -8,6 +8,7 @@ import { AddRoomStyle } from "../styles/addroom";
 
 const AddRoom = ({ socket }) => {
   const [open, setOpen] = useState(false);
+  const [formValidateMsg, setFormValidateMsg] = useState([]);
 
   useEffect(() => {
     socket.on("ADD_ROOM_STATUS", (data) => {
@@ -30,11 +31,49 @@ const AddRoom = ({ socket }) => {
 
   let formRoomName = React.createRef();
 
+  const formValidated = () => {
+    // Reset errors messages
+    setFormValidateMsg([]);
+
+    const minRoomNameLength = 5;
+    let correctForm = true;
+    let input = formRoomName.current.value.trim();
+
+    if (input.length < minRoomNameLength) {
+      correctForm = false;
+      setFormValidateMsg((formValidateMsg) => [
+        ...formValidateMsg,
+        "Room name length must be > " + minRoomNameLength,
+      ]);
+    }
+
+    if (input === false || !input) {
+      correctForm = false;
+      setFormValidateMsg((formValidateMsg) => [
+        ...formValidateMsg,
+        "Something went wrong!",
+      ]);
+    }
+
+    if (/^[a-zA-Z\s]*$/g.test(input) === false) {
+      correctForm = false;
+      setFormValidateMsg((formValidateMsg) => [
+        ...formValidateMsg,
+        "Room name: only letters allowed [a-zA-Z\\s]",
+      ]);
+    }
+
+    return correctForm;
+  };
+
   const handleAddRoom = (e) => {
     e.preventDefault();
-    socket.emit("ADD_ROOM", {
-      room_name: formRoomName.current.value,
-    });
+
+    if (formValidated()) {
+      socket.emit("ADD_ROOM", {
+        room_name: formRoomName.current.value,
+      });
+    }
   };
 
   return (
@@ -77,6 +116,12 @@ const AddRoom = ({ socket }) => {
               <Button type="submit" variant="contained" color="primary">
                 Add Room
               </Button>
+
+              <ul style={AddRoomStyle.formErrMsgUl}>
+                {formValidateMsg.map((err) => (
+                  <li key={err}>{err}</li>
+                ))}
+              </ul>
             </form>
           </div>
         </Fade>
