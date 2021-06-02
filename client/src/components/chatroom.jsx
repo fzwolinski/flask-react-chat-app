@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { ChatRoomStyle } from "../styles/chatroom";
 import ChatComment from "./chatcomment";
+import { chatMsgFormValidated } from "../utils/formValidator";
 
 const ChatRoom = ({ match, socket }) => {
   const [response, setResponse] = useState([
@@ -64,8 +65,17 @@ const ChatRoom = ({ match, socket }) => {
 
   const handleSendMsgSubmit = (e) => {
     e.preventDefault();
+    const msg = form_msg.current.value.trim();
+
+    let sendMsgFormCorrect = chatMsgFormValidated(msg);
+
+    if (sendMsgFormCorrect === false) {
+      console.log("Incorrect msg...");
+      return;
+    }
+
     socket.send({
-      msg: form_msg.current.value,
+      msg: msg,
       sess_id: localStorage.getItem("sess_id"),
       room: match.params.roomName,
     });

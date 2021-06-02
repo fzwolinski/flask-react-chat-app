@@ -61,3 +61,20 @@ export const setUsernameFormValidated = (username) => {
 
   return [isFormCorrect, errors];
 };
+
+export const chatMsgFormValidated = (msg) => {
+  const input = msg;
+  const minMsgLength = 1;
+  const maxMsgLength = 370;
+  let isFormCorrect = true;
+
+  if (input.length < minMsgLength || input.length > maxMsgLength) {
+    isFormCorrect = false;
+  }
+
+  if (input === false || !input) {
+    isFormCorrect = false;
+  }
+
+  return isFormCorrect;
+};

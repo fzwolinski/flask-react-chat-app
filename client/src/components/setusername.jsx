@@ -51,8 +51,8 @@ const SetUsername = ({ socket, history }) => {
     e.preventDefault();
     setFormErr([]);
 
-    var formCorrect, err;
-    var vResponse = setUsernameFormValidated(
+    let formCorrect, err;
+    let vResponse = setUsernameFormValidated(
       form_username.current.value.trim()
     );
     [formCorrect, err] = vResponse;
