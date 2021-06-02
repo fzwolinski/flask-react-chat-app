@@ -2,9 +2,12 @@ import { Button, Container, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { SetUsernameStyle } from "../styles/setusername";
+import { setUsernameFormValidated } from "../utils/formValidator";
 
 const SetUsername = ({ socket, history }) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [formErr, setFormErr] = useState([]);
+
   let isLoggedIn = false;
   useEffect(() => {
     if (localStorage.getItem("sess_id") != null) {
@@ -46,15 +49,30 @@ const SetUsername = ({ socket, history }) => {
 
   const handleSetUsername = (e) => {
     e.preventDefault();
+    setFormErr([]);
+
+    var formCorrect, err;
+    var vResponse = setUsernameFormValidated(
+      form_username.current.value.trim()
+    );
+    [formCorrect, err] = vResponse;
+
+    setFormErr(err);
+
+    if (formCorrect === false) {
+      return;
+    }
+
     if (isLoggedIn) {
-      // Update
+      // Update username
       socket.emit("SET_USERNAME", {
-        username: form_username.current.value,
+        username: form_username.current.value.trim(),
         sess_id: localStorage.getItem("sess_id"),
       });
     } else {
+      // Set username
       socket.emit("SET_USERNAME", {
-        username: form_username.current.value,
+        username: form_username.current.value.trim(),
         sess_id: uuidv4(),
       });
     }
@@ -80,6 +98,12 @@ const SetUsername = ({ socket, history }) => {
             Set Username
           </Button>
         )}
+
+        <ul style={SetUsernameStyle.formErrMsgUl}>
+          {formErr.map((err) => (
+            <li key={err}>{err}</li>
+          ))}
+        </ul>
       </form>
     </Container>
   );

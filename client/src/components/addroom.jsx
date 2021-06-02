@@ -34,13 +34,16 @@ const AddRoom = ({ socket }) => {
 
   const handleAddRoom = (e) => {
     e.preventDefault();
-    var validation = addRoomFormValidated(formRoomName.current.value);
 
-    setFormValidateMsg(validation[1]);
+    var formCorrect, err;
+    var vResponse = addRoomFormValidated(formRoomName.current.value.trim());
+    [formCorrect, err] = vResponse;
 
-    if (validation[0] === true) {
+    setFormValidateMsg(err);
+
+    if (formCorrect === true) {
       socket.emit("ADD_ROOM", {
-        room_name: formRoomName.current.value,
+        room_name: formRoomName.current.value.trim(),
       });
     }
   };
