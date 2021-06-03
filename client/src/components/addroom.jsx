@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { AddRoomStyle } from "../styles/addroom";
 import { addRoomFormValidated } from "../utils/formValidator";
 
-const AddRoom = ({ socket }) => {
+const AddRoom = ({ socket, showAlert }) => {
   const [open, setOpen] = useState(false);
   const [formValidateMsg, setFormValidateMsg] = useState([]);
 
@@ -14,9 +14,10 @@ const AddRoom = ({ socket }) => {
     socket.on("ADD_ROOM_STATUS", (data) => {
       if (data["ok"]) {
         // Room has been added
+        showAlert(data["msg"], "success");
         handleClose();
       } else {
-        console.log(data["msg"]);
+        showAlert(data["msg"], "error");
       }
     });
   });

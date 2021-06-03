@@ -5,7 +5,7 @@ import { ChatRoomStyle } from "../styles/chatroom";
 import ChatComment from "./chatcomment";
 import { chatMsgFormValidated } from "../utils/formValidator";
 
-const ChatRoom = ({ match, socket }) => {
+const ChatRoom = ({ match, socket, showAlert }) => {
   const [response, setResponse] = useState([
     {
       time: "07:23:02",
@@ -33,8 +33,6 @@ const ChatRoom = ({ match, socket }) => {
     socket.on("CHECK_USERNAME", (data) => {
       if (data["ok"] === true) {
         setUsername(data["username"]);
-      } else {
-        console.log(data["msg"]);
       }
     });
 
@@ -49,8 +47,6 @@ const ChatRoom = ({ match, socket }) => {
           },
         ]);
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        console.log(data["msg"]);
       }
     });
   }, []);
@@ -70,7 +66,7 @@ const ChatRoom = ({ match, socket }) => {
     let sendMsgFormCorrect = chatMsgFormValidated(msg);
 
     if (sendMsgFormCorrect === false) {
-      console.log("Incorrect msg...");
+      showAlert("Incorrect msg...", "error");
       return;
     }
 

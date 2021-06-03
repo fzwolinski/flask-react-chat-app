@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { SetUsernameStyle } from "../styles/setusername";
 import { setUsernameFormValidated } from "../utils/formValidator";
 
-const SetUsername = ({ socket, history }) => {
+const SetUsername = ({ socket, history, showAlert }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [formErr, setFormErr] = useState([]);
 
@@ -31,6 +31,7 @@ const SetUsername = ({ socket, history }) => {
       if (data["ok"] === true) {
         localStorage.setItem("sess_id", data["sess_id"]);
         // Redirect
+        showAlert(data["msg"], "success");
         if (
           history.location !== undefined &&
           history.location.state !== undefined &&
@@ -40,8 +41,9 @@ const SetUsername = ({ socket, history }) => {
         } else {
           history.push("/");
         }
+      } else {
+        showAlert(data["msg"], "error");
       }
-      console.log(data["msg"]);
     });
   }, []);
 
